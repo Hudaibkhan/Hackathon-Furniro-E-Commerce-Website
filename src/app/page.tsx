@@ -250,7 +250,7 @@ export default function Home() {
   />
 
   <Image
-    src={"/indicator.png"}
+    src={"/Indicator.png"}
     alt="indicator"
     width={120}
     height={27}
