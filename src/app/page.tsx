@@ -1,101 +1,309 @@
 import Image from "next/image";
+import ProductCard from "./components/Product-Card";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div>
+      {/* Hero Section Start */}
+      <div className="relative w-full h-[60vh] md:h-[80vh] lg:h-[100vh] bg-[url('/banner-image.png')] bg-cover bg-center bg-no-repeat">
+        {/* Content Section */}
+        <div className="absolute top-1/2 right-4 md:right-10 transform -translate-y-1/2 bg-[#FFF3E3] max-w-[90%] md:max-w-[50%] p-4 md:p-6 lg:p-10 flex flex-col gap-2">
+          <p className="font-semibold text-sm md:text-base font-poppins">
+            New Arrival
+          </p>
+          <h1 className="text-2xl md:text-4xl lg:text-5xl xl:w-96 font-bold font-poppins text-[#B88E2F] leading-tight">
+            Discover Our New Collection
+          </h1>
+          <p className="text-xs md:text-sm lg:text-lg font-medium font-poppins mt-2 md:mt-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+            tellus, luctus nec ullamcorper mattis.
+          </p>
+          <button
+            type="button"
+            className="w-[180px] md:w-[200px] h-[50px] md:h-[60px] bg-[#B88E2F] text-white text-xs md:text-sm lg:text-base font-bold font-poppins mt-4 md:mt-6"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Buy Now
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      </div>
+      {/* Hero Section End */}
+
+      {/* Browse Range Start */}
+      <div className="w-full mx-auto my-12 px-4">
+        {/* Heading Section */}
+        <div className="max-w-[90%] md:max-w-[559px] mx-auto mb-8 md:mb-16 text-center">
+          <h2 className="font-poppins font-bold text-2xl md:text-[32px] leading-tight text-[#333333]">
+            Browse The Range
+          </h2>
+          <p className="text-sm md:text-xl leading-6 md:leading-[30px] font-normal font-poppins text-[#666666] mt-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
+        </div>
+
+        {/* Cards Section */}
+        <div className="flex flex-col md:flex-row justify-center md:justify- gap-8 md:gap-4">
+          {/* Card 1 */}
+          <div className="flex flex-col items-center gap-4">
+            <Image
+              src="/dining.png"
+              alt="Dining"
+              width={381}
+              height={480}
+              className="w-full max-w-[320px] md:max-w-[381px] h-auto"
+            />
+            <h3 className="text-center font-semibold text-lg md:text-2xl text-[#333333]">
+              Dining
+            </h3>
+          </div>
+
+          {/* Card 2 */}
+          <div className="flex flex-col items-center gap-4">
+            <Image
+              src="/living.png"
+              alt="Living"
+              width={381}
+              height={480}
+              className="w-full max-w-[320px] md:max-w-[381px] h-auto"
+            />
+            <h3 className="text-center font-semibold text-lg md:text-2xl text-[#333333]">
+              Living
+            </h3>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex flex-col items-center gap-4">
+            <Image
+              src="/bedroom.png"
+              alt="Bedroom"
+              width={381}
+              height={480}
+              className="w-full max-w-[320px] md:max-w-[381px] h-auto"
+            />
+            <h3 className="text-center font-semibold text-lg md:text-2xl text-[#333333]">
+              Bedroom
+            </h3>
+          </div>
+        </div>
+      </div>
+      {/* Browse Range End */}
+
+      {/* Our Product Start */}
+      <div className="lg:w-[1236px] mx-auto px-4 py-6">
+        <div>
+          {/* Section Title */}
+          <h2 className="text-[32px] md:text-[40px] leading-[48px] font-poppins font-bold text-center text-[#3A3A3A] mb-8 md:mb-16">
+            Our Products
+          </h2>
+
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-7">
+            {/* First Row */}
+            <ProductCard
+              image="/image-1.png"
+              name="Syltherine"
+              description="Stylish cafe chair"
+              discountedPrice="Rp 2.500.000"
+              originalPrice="Rp 3.500.000"
+              discountBgColor="bg-[#E97171]"
+              discount="-30%"
+            />
+
+            <ProductCard
+              image="/images-2.png"
+              name="Leviosa"
+              description="Stylish cafe chair"
+              discountedPrice="Rp 2.500.000"
+              showOverlay={true}
+            />
+
+            <ProductCard
+              image="/images-3.png"
+              name="Lolito"
+              description="Luxury big sofa"
+              discountedPrice="Rp 7.000.000"
+              originalPrice="Rp 14.000.000"
+              discountBgColor="bg-[#E97171]"
+              discount="-50%"
+            />
+
+            <ProductCard
+              image="/image-4.png"
+              name="Respira"
+              description="Outdoor bar table and stool"
+              discountedPrice="Rp 500.000"
+              discountBgColor="bg-[#2EC1AC]"
+              discount="New"
+            />
+
+            {/* Second Row */}
+            <ProductCard
+              image="/images-5.png"
+              name="Grifo"
+              description="Night lamp"
+              discountedPrice="Rp 1.500.000"
+            />
+
+            <ProductCard
+              image="/image-6.png"
+              name="Muggo"
+              description="Small mug"
+              discountedPrice="Rp 150.000"
+              discountBgColor="bg-[#2EC1AC]"
+              discount="New"
+            />
+
+            <ProductCard
+              image="/image-7.png"
+              name="Pingky"
+              description="Cute bed set"
+              discountedPrice="Rp 7.000.000"
+              originalPrice="Rp 14.000.000"
+              discountBgColor="bg-[#E97171]"
+              discount="-50%"
+            />
+
+            <ProductCard
+              image="/image-8.png"
+              name="Potty"
+              description="Minimalist flower pot"
+              discountedPrice="Rp 500.000"
+              discountBgColor="bg-[#2EC1AC]"
+              discount="New"
+            />
+          </div>
+
+          {/* button start */}
+          <div className="flex justify-center my-8">
+            <button
+              type="button"
+              className=" w-[245px] h-[48px] border border-[#B88E2F] text-[#B88E2F] font-semibold text-base font-poppins items-center justify-center"
+            >
+              Show More
+            </button>
+          </div>
+          {/* button end */}
+        </div>
+      </div>
+      {/* Our Product End */}
+
+      {/* beautiful section start */}
+<div className="h-[670px] w-full flex bg-[#FCF8F3] lg:flex-row flex-col">
+  {/* Text Left Side */}
+  <div className="flex flex-col my-auto gap-6 pl-6 md:pl-14 w-full lg:w-1/2">
+    <div className="w-full md:w-[422px] h-auto flex flex-col gap-3">
+      <h3 className="text-[32px] md:text-[40px]/[48px] text-[#3A3A3A] font-bold font-poppins">
+        50+ Beautiful rooms inspiration
+      </h3>
+      <p className="text-sm md:text-base font-medium font-poppins text-[#616161]">
+        Our designer already made a lot of beautiful prototipe of rooms that inspire you
+      </p>
+    </div>
+
+    <button
+      type="button"
+      className="w-[176px] h-[48px] bg-[#B88E2F] text-base font-poppins font-semibold flex items-center justify-center"
+    >
+      Explore More
+    </button>
+  </div>
+
+  {/* Images Section */}
+  <div className="flex gap-5 relative justify-center items-center overflow-hidden max-h-[600px] lg:justify-start w-full lg:w-1/2 mt-6 lg:mt-0">
+    {/* Main Image */}
+    <div className="relative w-full max-w-[404px]">
+      <Image
+        src={"/room-1.png"}
+        alt="bedroom image"
+        layout="responsive"
+        width={404}
+        height={582}
+      />
+      <div className="absolute left-4 md:left-6 bottom-14 md:bottom-28 flex items-end">
+        <div className="md:w-[217px] w-[150px] md:h-[130px] h-[100px] bg-white flex flex-col justify-center pl-5">
+          <p className="text-sm md:text-base font-poppins text-[#616161] font-medium">
+            01 --- Bed Room
+          </p>
+          <h5 className="font-semibold font-poppins text-lg md:text-[28px]/[33.6px] text-[#3A3A3A]">
+            Inner Peace
+          </h5>
+        </div>
+        <div className="h-10 w-10 bg-[#B88E2F] flex justify-center items-center">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={"/right-arrow.png"}
+            alt="arrow image"
+            height={12}
+            width={18}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      </div>
+    </div>
+
+    {/* Smaller Images */}
+    <div className="flex flex-col w-full max-w-[280px] gap-6 lg:gap-12 lg:-mt-[35px]">
+  <Image
+    src={"/room-2.png"}
+    alt="dining table image"
+    layout="intrinsic"
+    width={372}
+    height={408}
+    className="w-[300px] h-[350px] md:w-[372px] md:h-[408px] lg:w-[400px] lg:h-[500px] xl:h-[550px] max-w-full"
+  />
+
+  <Image
+    src={"/indicator.png"}
+    alt="indicator"
+    width={120}
+    height={27}
+    className="w-[120px] h-auto "
+  />
+</div>
+
+
+    {/* Small Side Image */}
+    <div className="hidden lg:block lg:-mt-[109px]">
+      <Image
+        src={"/room-3.png"}
+        alt="small image"
+        width={52}
+        height={70}
+        className="w-[82px] h-auto"
+      />
+    </div>
+
+    {/* Image Navigator */}
+    <Image
+      src={"/image-navigator.png"}
+      alt="image navigator"
+      width={48}
+      height={48}
+      className="absolute right-6 top-[60%] lg:right-12 lg:top-52"
+    />
+  </div>
+  </div>
+  {/* beautiful section end */}
+
+  {/*FuniroFurniture start */}
+  <div className="mt-16">
+  <div className="px-4">
+  <p className="font-poppins font-semibold text-center text-[#616161] text-lg md:text-xl/[30px]">
+    Share your setup with
+  </p>
+  <h2 className="text-[#3A3A3A] font-poppins font-bold text-2xl/[32px] md:text-[40px]/[48px] text-center">
+    #FuniroFurniture
+  </h2>
+</div>
+
+
+    <Image
+  src={"/images.png"}
+  alt="h"
+  height={721}
+  width={1799}
+  className="w-full h-auto object-cover"
+/>
+  </div>
+  {/*FuniroFurniture end */}
+
     </div>
   );
 }
