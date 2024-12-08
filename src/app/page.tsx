@@ -295,7 +295,7 @@ export default function Home() {
 
 
     <Image
-  src={"/images.png"}
+  src={"/Images.png"}
   alt="h"
   height={721}
   width={1799}
