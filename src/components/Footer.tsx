@@ -16,7 +16,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2 */}
-          <div className="flex flex-col gap-8 ml-10">
+          <div className="flex flex-col gap-8 ml-0 md:ml-10">
             <h6 className="text-[#9F9F9F] text-sm font-semibold">Links</h6>
             <Link href="/" className="text-base font-medium hover:underline">
               Home

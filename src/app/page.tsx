@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ProductCard from "../components/Product-Card";
-
+import Link from "next/link";
 export default function Home() {
   return (
     <div>
@@ -174,12 +174,14 @@ export default function Home() {
 
           {/* button start */}
           <div className="flex justify-center my-8">
-            <button
-              type="button"
-              className=" w-[245px] h-[48px] border border-[#B88E2F] hover:bg-[#FCF8F3] text-[#B88E2F] font-semibold text-base font-poppins items-center justify-center"
-            >
-              Show More
-            </button>
+            <Link href="/shop">
+              <button
+                type="button"
+                className=" w-[245px] h-[48px] border border-[#B88E2F] hover:bg-[#FCF8F3] text-[#B88E2F] font-semibold text-base font-poppins items-center justify-center"
+              >
+                Show More
+              </button>
+            </Link>
           </div>
           {/* button end */}
         </div>

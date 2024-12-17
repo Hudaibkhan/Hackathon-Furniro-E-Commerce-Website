@@ -43,7 +43,7 @@ export default function Header() {
       </Link>
     </li>
     <li>
-      <Link href="/blo" className="block p-3 md:p-0 hover:underline active:underline">
+      <Link href="/blog" className="block p-3 md:p-0 hover:underline active:underline">
         Blog
       </Link>
     </li>
@@ -59,7 +59,7 @@ export default function Header() {
     <Link href={"/"}><Image src={"/profile-icon.png"} alt="Profile icon" width={23.33} height={18.67}/></Link>
     <Link href={"/"}><Image src={"/icon-search.png"} alt="Search Icon" height={22.17} width={22.17}/></Link>
     <Link href={"/"}><Image src={"/heart.png"} alt="Heart Icon" height={26.81} width={35.33}/></Link>
-    <Link href={"/"}><Image src={"/shopping-cart.png"} alt="Shopping Cart" height={22.06} width={24.53}/></Link>
+    <Link href={"/cart"}><Image src={"/shopping-cart.png"} alt="Shopping Cart" height={22.06} width={24.53}/></Link>
   </div>
 </header>
 
