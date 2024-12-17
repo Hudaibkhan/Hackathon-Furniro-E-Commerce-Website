@@ -1,13 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { products } from "@/app/shop/page"; // Adjust path as needed
 import { FaChevronRight } from "react-icons/fa";
-import React, { useState } from "react";
+import { useState } from "react";
 import ProductCard from "@/components/Product-Card";
 import Link from "next/link";
-
-
 
 
 export default function SingleProduct() {
@@ -22,23 +18,6 @@ export default function SingleProduct() {
   const decrement = () => {
     if (count > 0) setCount(count - 1);
   };
-
-  const params = useParams();
-  const { id } = params;
-
-  // Find the product by ID
-  const product = products.find((item) => item.id === parseInt(id as string));
-  
-
-  // Handle case where product is not found
-  if (!product) {
-    return (
-      <div className="text-center mt-10 text-red-500">Product not found!</div>
-    );
-  }
-
-
-
 
   return (
     <div>
@@ -75,7 +54,6 @@ export default function SingleProduct() {
           <div className="lg:w-[553px] w-auto h-[500px] flex lg:flex-row flex-col lg:gap-5 md:gap-3 gap-2">
             <div className="lg:w-[76px] w-auto h-[416px] lg:flex lg:flex-col flex flex-row gap-2 lg:gap-8">
               <span className="w-[76px] h-[80px] rounded-md flex items-center bg-[#F9F1E7]">
-                {" "}
                 <Image
                   src={"/product-1.png"}
                   alt="related images"
@@ -84,7 +62,6 @@ export default function SingleProduct() {
                 />
               </span>
               <span className="w-[76px] h-[80px] rounded-md flex items-center bg-[#F9F1E7]">
-                {" "}
                 <Image
                   src={"/product-2.png"}
                   alt="related images"
@@ -93,7 +70,6 @@ export default function SingleProduct() {
                 />
               </span>
               <span className="w-[76px] h-[80px] rounded-md flex items-center bg-[#F9F1E7]">
-                {" "}
                 <Image
                   src={"/product-3.png"}
                   alt="related images"
@@ -102,7 +78,6 @@ export default function SingleProduct() {
                 />
               </span>
               <span className="w-[76px] h-[80px] rounded-md flex items-center bg-[#F9F1E7]">
-                {" "}
                 <Image
                   src={"/product-4.png"}
                   alt="related images"
@@ -114,11 +89,11 @@ export default function SingleProduct() {
 
             <div className="lg:h-[500px] h-[280px] lg:w-[423px] xs:w-[324px] w-[280px] bg-[#F9F1E7] flex justify-center items-center rounded-xl">
               <Image
-                src={product.image}
+                src={"/Asgaard-sofa.png"}
                 alt="Single Images"
                 className="rounded-lg"
-                height={291}
-                width={381}
+                height={391}
+                width={481}
               />
             </div>
           </div>
@@ -127,11 +102,11 @@ export default function SingleProduct() {
           {/* details section start */}
           <div className="h-auto xl:h-[730px] lg:w-[606px] w-auto flex flex-col gap-4">
             <h2 className="font-poppins font-normal text-[42px]/[63px]">
-              {product.name}
-            </h2>
+                Asgaard sofa
+           </h2>
 
             <p className="text-[#9F9F9F] font-poppins font-medium text-2xl/9 ">
-              {product.originalPrice}
+            Rs. 250,000.00
             </p>
 
             <div className="flex gap-5 items-center">
@@ -207,12 +182,14 @@ export default function SingleProduct() {
                   +
                 </button>
               </span>
-              <button
-                type="button"
-                className="h-16 w-[215px] border gap-5 border-black text-xl/[30px] font-medium rounded-md flex items-center justify-center"
-              >
-                Add To Cart
-              </button>
+              <Link href={"/cart"}>
+                <button
+                    type="button"
+                    className="h-16 w-[215px] border gap-5 border-black text-xl/[30px] font-medium rounded-md flex items-center justify-center"
+                >
+                    Add To Cart
+                </button>
+              </Link>
               <button
                 type="button"
                 className="h-16 w-[215px] border gap-5 border-black text-xl/[30px] font-medium rounded-md flex items-center justify-center"

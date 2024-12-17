@@ -56,10 +56,10 @@ export default function Header() {
 
   {/* Icons */}
   <div className="flex gap-2 lg:gap-3 items-center absolute right-12">
-    <Link href={"/"}><Image src={"/profile-icon.png"} alt="Profile icon" width={23.33} height={18.67}/></Link>
-    <Link href={"/"}><Image src={"/icon-search.png"} alt="Search Icon" height={22.17} width={22.17}/></Link>
-    <Link href={"/"}><Image src={"/heart.png"} alt="Heart Icon" height={26.81} width={35.33}/></Link>
-    <Link href={"/cart"}><Image src={"/shopping-cart.png"} alt="Shopping Cart" height={22.06} width={24.53}/></Link>
+    <Link href={""}><Image src={"/profile-icon.png"} alt="Profile icon" width={23.33} height={18.67}/></Link>
+    <Link href={""}><Image src={"/icon-search.png"} alt="Search Icon" height={22.17} width={22.17}/></Link>
+    <Link href={""}><Image src={"/heart.png"} alt="Heart Icon" height={26.81} width={35.33}/></Link>
+    <Link href={""}><Image src={"/shopping-cart.png"} alt="Shopping Cart" height={22.06} width={24.53}/></Link>
   </div>
 </header>
 

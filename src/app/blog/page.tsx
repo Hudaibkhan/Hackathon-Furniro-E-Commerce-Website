@@ -136,13 +136,13 @@ export default function Blog() {
         <button className="w-[60px] h-[60px] font-poppins rounded-lg text-xl bg-[#B88E2F] text-white flex justify-center items-center">
           1
         </button>
-        <button className="w-[60px] h-[60px] font-poppins rounded-lg text-xl bg-[#F9F1E7] flex justify-center items-center">
+        <button className="w-[60px] h-[60px] font-poppins rounded-lg text-xl hover:bg-[#B88E2F] hover:text-white bg-[#F9F1E7] flex justify-center items-center">
           2
         </button>
-        <button className="w-[60px] h-[60px] font-poppins rounded-lg text-xl bg-[#F9F1E7] flex justify-center items-center">
+        <button className="w-[60px] h-[60px] font-poppins rounded-lg text-xl hover:bg-[#B88E2F] hover:text-white bg-[#F9F1E7] flex justify-center items-center">
           3
         </button>
-        <button className="w-[100px] h-[60px] font-poppins rounded-lg text-xl bg-[#F9F1E7] flex justify-center items-center">
+        <button className="w-[100px] h-[60px] font-poppins rounded-lg text-xl hover:bg-[#B88E2F] hover:text-white bg-[#F9F1E7] flex justify-center items-center">
           Next
         </button>
       </div>
