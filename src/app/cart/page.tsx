@@ -1,11 +1,12 @@
 import Banner from "@/components/Banner";
 import CustomerCare from "@/components/Customer-Care";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Cart() {
   return (
     <div>
-      <Banner name="Cart" />
+      <Banner name="Cart" title="Cart" logo="/logo.png"/>
 
       <div className="h-auto lg:h-[525px] flex justify-center items-center px-4 md:px-6 lg:px-0 xl:my-0 my-5">
         <div className="h-auto lg:h-[390px] w-full lg:w-[1240px] flex flex-col xl:flex-row justify-between gap-6">
@@ -74,12 +75,14 @@ export default function Cart() {
               </span>
             </div>
 
-            <button
-              type="button"
-              className="text-lg lg:text-xl/[30px] font-normal h-12 lg:h-[58px] border border-black w-full lg:w-[222px] rounded-xl"
-            >
-              Check Out
-            </button>
+            <Link href={"/checkout"}>
+              <button
+                type="button"
+                className="text-lg lg:text-xl/[30px] font-normal h-12 lg:h-[58px] border border-black w-[222px] rounded-xl"
+              >
+                Check Out
+              </button>
+            </Link>
           </div>
         </div>
       </div>

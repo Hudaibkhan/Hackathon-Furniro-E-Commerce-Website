@@ -42,7 +42,6 @@ export default function Home() {
 
         {/* Cards Section */}
         <div className="flex flex-col md:flex-row justify-center md:justify- gap-8 md:gap-4">
-          {/* Card 1 */}
           <div className="flex flex-col items-center gap-4">
             <Image
               src="/dining.png"
@@ -56,7 +55,6 @@ export default function Home() {
             </h3>
           </div>
 
-          {/* Card 2 */}
           <div className="flex flex-col items-center gap-4">
             <Image
               src="/living.png"
@@ -70,7 +68,6 @@ export default function Home() {
             </h3>
           </div>
 
-          {/* Card 3 */}
           <div className="flex flex-col items-center gap-4">
             <Image
               src="/bedroom.png"
@@ -88,7 +85,7 @@ export default function Home() {
       {/* Browse Range End */}
 
       {/* Our Product Start */}
-      <div className="lg:w-[1236px] mx-auto px-4 py-6">
+      <div className="xl:w-[1236px] mx-auto px-4 py-6">
         <div>
           {/* Section Title */}
           <h2 className="text-[32px] md:text-[40px] leading-[48px] font-poppins font-bold text-center text-[#3A3A3A] mb-8 md:mb-16">
@@ -97,7 +94,6 @@ export default function Home() {
 
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-7">
-            {/* First Row */}
             <ProductCard
               image="/image-1.png"
               name="Syltherine"
@@ -135,7 +131,6 @@ export default function Home() {
               discount="New"
             />
 
-            {/* Second Row */}
             <ProductCard
               image="/images-5.png"
               name="Grifo"

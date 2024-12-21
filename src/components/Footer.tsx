@@ -24,7 +24,7 @@ export default function Footer() {
             <Link href="/shop" className="text-base font-medium hover:underline">
               Shop
             </Link>
-            <Link href="/" className="text-base font-medium hover:underline">
+            <Link href="/blog" className="text-base font-medium hover:underline">
               About
             </Link>
             <Link href="/contact" className="text-base font-medium hover:underline">

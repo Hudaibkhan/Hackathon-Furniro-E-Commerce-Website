@@ -8,7 +8,7 @@ export default function Shop() {
   return (
     <div>
       {/* banner section start*/}
-      <Banner name="Shop" />
+      <Banner name="Shop" logo="/logo.png" title="Shop"/>
       {/* banner section end */}
 
       {/* Second Section Start */}
@@ -80,7 +80,7 @@ export default function Shop() {
       {/* items start */}
 
       {/* Our Product Start */}
-      <div className="lg:w-[1236px] mx-auto px-4 py-6">
+      <div className="xl:w-[1236px] w-auto mx-auto px-4 py-6">
         <div>
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-7">

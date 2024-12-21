@@ -6,7 +6,7 @@ import { FiSearch } from "react-icons/fi";
 export default function Blog() {
   return (
     <div>
-      <Banner name="Blog" />
+      <Banner name="Blog" title="Blog" logo="/logo.png"/>
       {/* Main grid layout */}
       <div className="grid grid-cols-1 mx-auto xl:grid-cols-[820px_380px] gap-12 lg:gap-10 pt-12 max-w-[1440px] pl-3">
         {/* Left Blog Section */}

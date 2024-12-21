@@ -190,12 +190,14 @@ export default function SingleProduct() {
                     Add To Cart
                 </button>
               </Link>
-              <button
-                type="button"
-                className="h-16 w-[215px] border gap-5 border-black text-xl/[30px] font-medium rounded-md flex items-center justify-center"
-              >
-                + Compare
-              </button>
+              <Link href={"/product-comparison"}>
+                <button
+                  type="button"
+                  className="h-16 w-[215px] border gap-5 border-black text-xl/[30px] font-medium rounded-md flex items-center justify-center"
+                >
+                  + Compare
+                </button>
+              </Link>
             </div>
 
             <hr className="mt-10 mb-6" />
