@@ -123,7 +123,7 @@ export default function Header() {
           {/* Popup */}
           {isOpen && (
             <div className="
-            absolute xxl:-right-28 xl:-right-[94px] lg:-right-20 -right-10  xxl:-top-10
+            absolute xxl:-right-28 lg:-right-10 -right-10  xxl:-top-10
              xl:w-[417px] lg:w-[370px] w-[320px] xl:h-[746px] lg:h-[650px] h-[600px]
               lg:py-5 lg:px-5 px-2 py-5  bg-[#fdfbfb] flex flex-col justify-between">
               <div>
@@ -198,10 +198,10 @@ export default function Header() {
 
                 <hr className="-mx-5"/>
 
-                <span className="flex gap-4 pt-2">
+                <span className="flex xl:gap-5 lg:gap-4 gap-1 pt-2">
                   <Link href={"/cart"}><button className="w-[87px] h-[30px] border border-black rounded-[50px] font-poppins font-normal text-xs/[18px]">Cart</button></Link>
-                  <Link href={"/checkout"}><button className="w-[118px] h-[30px] border border-black rounded-[50px] font-poppins font-normal text-xs/[18px]">Checkout</button></Link>
-                  <Link href={"/product-comparison"}><button className="w-[135px] h-[30px] border border-black rounded-[50px] font-poppins font-normal text-xs/[18px]">Comparison</button></Link>
+                  <Link href={"/checkout"}><button className="xl:w-[118px] lg:w-[105px] w-[95px] h-[30px] border border-black rounded-[50px] font-poppins font-normal text-xs/[18px]">Checkout</button></Link>
+                  <Link href={"/product-comparison"}><button className="xxl:w-[130px] xl:w-[125px] lg-w-[120px] w-[115px] h-[30px] border border-black rounded-[50px] font-poppins font-normal text-xs/[18px]">Comparison</button></Link>
                 </span>
               </div>       
 
