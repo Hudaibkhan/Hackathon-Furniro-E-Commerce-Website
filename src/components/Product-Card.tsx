@@ -71,53 +71,62 @@ const ProductCard: React.FC<ProductCardProps> = ({
             showOverlay || "opacity-0 group-hover:opacity-100"
           }`}
         >
+          <Link href={"/cart"}>
           <button
             type="button"
             className="text-[#D89E00] w-full sm:w-[80%] lg:w-[202px] h-12 bg-white font-semibold text-sm sm:text-base rounded-lg"
           >
             Add to cart
           </button>
+          </Link>
 
           {/* Overlay Actions */}
           <div className="flex justify-between w-full sm:w-[80%] lg:w-[202px]">
             {/* Share */}
-            <div className="flex items-center gap-1 text-white cursor-pointer">
-              <Image
-                src={"/share.png"}
-                alt="Share Icon"
-                height={16}
-                width={16}
-              />
-              <p className="text-xs sm:text-sm font-medium font-poppins">
-                Share
-              </p>
-            </div>
+            <Link href={"/share"}>
+              <div className="flex items-center gap-1 text-white cursor-pointer">
+                <Image
+                  src={"/share.png"}
+                  alt="Share Icon"
+                  height={16}
+                  width={16}
+                />
+                <p className="text-xs sm:text-sm font-medium font-poppins">
+                  Share
+                </p>
+              </div>
+            </Link>
 
             {/* Compare */}
-            <div className="flex items-center gap-1 text-white cursor-pointer">
-              <Image
-                src={"/compare.png"}
-                alt="Compare Icon"
-                height={16}
-                width={16}
-              />
-              <p className="text-xs sm:text-sm font-medium font-poppins">
-                Compare
-              </p>
-            </div>
+            <Link href={"/product-comparison"}>
+              <div className="flex items-center gap-1 text-white cursor-pointer">
+                <Image
+                  src={"/compare.png"}
+                  alt="Compare Icon"
+                  height={16}
+                  width={16}
+                />
+                <p className="text-xs sm:text-sm font-medium font-poppins">
+                  Compare
+                </p>
+              </div>
+            </Link>
 
             {/* Like */}
-            <div className="flex items-center gap-1 text-white cursor-pointer">
-              <Image
-                src={"/heart-white.png"}
-                alt="Like Icon"
-                height={16}
-                width={16}
-              />
-              <p className="text-xs sm:text-sm font-medium font-poppins">
-                Like
-              </p>
-            </div>
+            <Link href={"/like"}>
+              <div className="flex items-center gap-1 text-white cursor-pointer">
+                <Image
+                  src={"/heart-white.png"}
+                  alt="Like Icon"
+                  height={16}
+                  width={16}
+                />
+                <p className="text-xs sm:text-sm font-medium font-poppins">
+                  Like
+                </p>
+              </div>
+            </Link>
+
           </div>
         </div>
       </div>
