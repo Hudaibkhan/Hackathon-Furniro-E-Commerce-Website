@@ -1,9 +1,126 @@
+"use client";
 import Image from "next/image";
-import ProductCard from "../components/Product-Card";
+// import { ProductCardProps } from "../components/Product-Card";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { useEffect, useState } from "react";
+import { Product } from "@/types/productData";
+import { EightProduct } from "@/sanity/lib/queries";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  likeProduct,
+  addToComparison,
+  removeFromComparison,
+  getComparison,
+} from "../../redux/cartSlice";
 export default function Home() {
+  const dispatch = useDispatch();
+  const comparison = useSelector(getComparison); // Comparison products state
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notification, setNotification] = useState<string | null>(null); // Notification state
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    async function fetchProductData() {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+
+        const productFetchData: Product[] = await client.fetch(EightProduct);
+        if (productFetchData.length === 0) {
+          setErrorMessage("No products found.");
+        } else {
+          setProducts(productFetchData);
+        }
+      } catch (error: unknown) {
+        if (error instanceof TypeError) {
+          setErrorMessage(
+            "Network error. Please check your internet connection."
+          );
+        } else {
+          setErrorMessage("Failed to fetch products. Please try again later.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProductData();
+  }, []);
+
+  // Notification Handler
+  const triggerNotification = (message: string) => {
+    setNotification(message);
+    setTimeout(() => setNotification(null), 3000); // Hide after 3 seconds
+  };
+
+  // Add to Cart Handler
+  const handleAddToCart = (product: Product) => {
+    dispatch(addToCart(product));
+    triggerNotification(`${product.title} has been added to the cart.🛒`);
+  };
+
+  // Like Product Handler
+  const handleLikeProduct = (product: Product) => {
+    dispatch(likeProduct(product));
+    triggerNotification(`You liked ${product.title}.🤍`);
+  };
+
+  // Add to Comparison Handler
+  const handleAddToComparison = (product: Product) => {
+    if (comparison.length >= 2) {
+      triggerNotification("You can only compare up to 2 products."); // Show a warning
+    } else if (comparison.some((item) => item._id === product._id)) {
+      triggerNotification(`${product.title} is already in comparison.`);
+    } else {
+      dispatch(addToComparison(product));
+      triggerNotification(`${product.title} added to comparison.`);
+    }
+  };
+  const handleRemoveFromComparison = (productId: string) => {
+    // Remove product from the comparison array
+    dispatch(removeFromComparison(productId));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 border-4 border-gray-300 border-t-[#D89E00] rounded-full animate-spin"></div>
+          <p className="mt-4 text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#f9f0f0]">
+        <div className="text-center">
+          <p className="text-red-600 text-lg font-semibold">{errorMessage}</p>
+          <button
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
+      {/* Notification Section */}
+      {notification && (
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-[#D89E00] text-white px-4 py-2 rounded-md shadow-md">
+          {notification}
+        </div>
+      )}
+
       {/* Hero Section Start */}
       <div className="relative w-full h-[60vh] md:h-[80vh] lg:h-[100vh] bg-[url('/banner-image.png')] bg-cover bg-center bg-no-repeat">
         {/* Content Section */}
@@ -88,84 +205,84 @@ export default function Home() {
       <div className="xl:w-[1236px] mx-auto px-4 py-6">
         <div>
           {/* Section Title */}
-          <h2 className="text-[32px] md:text-[40px] leading-[48px] font-poppins font-bold text-center text-[#3A3A3A] mb-8 md:mb-16">
+          <h2 className="text-[32px] md:text-[40px] leading-[48px] font-poppins font-[750] text-center text-[#3A3A3A] mb-8 md:mb-16">
             Our Products
           </h2>
 
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-7">
-            <ProductCard
-              image="/image-1.png"
-              name="Syltherine"
-              description="Stylish cafe chair"
-              discountedPrice="Rp 2.500.000"
-              originalPrice="Rp 3.500.000"
-              discountBgColor="bg-[#E97171]"
-              discount="-30%"
-            />
-
-            <ProductCard
-              image="/images-2.png"
-              name="Leviosa"
-              description="Stylish cafe chair"
-              discountedPrice="Rp 2.500.000"
-              showOverlay={true}
-            />
-
-            <ProductCard
-              image="/images-3.png"
-              name="Lolito"
-              description="Luxury big sofa"
-              discountedPrice="Rp 7.000.000"
-              originalPrice="Rp 14.000.000"
-              discountBgColor="bg-[#E97171]"
-              discount="-50%"
-            />
-
-            <ProductCard
-              image="/image-4.png"
-              name="Respira"
-              description="Outdoor bar table and stool"
-              discountedPrice="Rp 500.000"
-              discountBgColor="bg-[#2EC1AC]"
-              discount="New"
-            />
-
-            <ProductCard
-              image="/images-5.png"
-              name="Grifo"
-              description="Night lamp"
-              discountedPrice="Rp 1.500.000"
-            />
-
-            <ProductCard
-              image="/image-6.png"
-              name="Muggo"
-              description="Small mug"
-              discountedPrice="Rp 150.000"
-              discountBgColor="bg-[#2EC1AC]"
-              discount="New"
-            />
-
-            <ProductCard
-              image="/image-7.png"
-              name="Pingky"
-              description="Cute bed set"
-              discountedPrice="Rp 7.000.000"
-              originalPrice="Rp 14.000.000"
-              discountBgColor="bg-[#E97171]"
-              discount="-50%"
-            />
-
-            <ProductCard
-              image="/image-8.png"
-              name="Potty"
-              description="Minimalist flower pot"
-              discountedPrice="Rp 500.000"
-              discountBgColor="bg-[#2EC1AC]"
-              discount="New"
-            />
+          {/* display product section start */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-7 w-full">
+            {products.map((product: Product) => (
+              <div
+                className="relative w-[250px] xs:w-[280px] mx-auto group"
+                key={product._id}
+              >
+                <Link href={`/shop/${product._id}`}>
+                  <div className="relative ">
+                    {product.productImage && (
+                      <Image
+                        src={urlFor(product.productImage).url()}
+                        alt={product.title || "Product Image"}
+                        className="rounded-lg w-full h-[320px]"
+                        height={391}
+                        width={481}
+                      />
+                    )}
+                  </div>
+                </Link>
+                <div className="bg-[#eaedf2] p-4">
+                  <h4 className="font-bold text-2xl mt-3">{product.title}</h4>
+                  <p className="font-semibold text-xl mt-2">${product.price}</p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {/* Add to Cart */}
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="bg-white text-[#D89E00] w-full py-2 rounded-lg"
+                    >
+                      Add to Cart
+                    </button>
+                    <div className="flex w-full gap-2 justify-center">
+                      {/* Like */}
+                      <button
+                        onClick={() => handleLikeProduct(product)}
+                        className="bg-[#D89E00] flex items-center gap-1 text-white px-3 py-2 rounded-lg"
+                      >
+                        <Image
+                          src="/heart-white.png"
+                          alt="Like Icon"
+                          height={14}
+                          width={14}
+                        />
+                        Like
+                      </button>
+                      {/* Add to Comparison */}
+                      <button
+                        onClick={() => {
+                          if (
+                            comparison.some((item) => item._id === product._id)
+                          ) {
+                            handleRemoveFromComparison(product._id); // Call the remove function if already in comparison
+                          } else {
+                            handleAddToComparison(product); // Call the add function if not in comparison
+                          }
+                        }}
+                        className={`py-2 px-3 rounded-lg ${
+                          comparison.some((item) => item._id === product._id)
+                            ? "bg-gray-500 text-white text-xs" // Styling for "Remove from Comparison"
+                            : "bg-[#D89E00] text-white" // Styling for "Add to Comparison"
+                        }`}
+                      >
+                        {comparison.some((item) => item._id === product._id)
+                          ? "Remove from Comparison"
+                          : "Add to Comparison"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* display product section end */}
 
           {/* button start */}
           <div className="flex justify-center my-8">

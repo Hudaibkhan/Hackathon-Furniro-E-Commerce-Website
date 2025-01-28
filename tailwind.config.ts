@@ -52,18 +52,24 @@ export default {
   			}
   		},
   		fontFamily: {
-  			montserrat: ["Montserrat", "sans-serif"],
-  			poppins: ["Poppins", "sans-serif"]
+  			montserrat: [
+  				'Montserrat',
+  				'sans-serif'
+  			],
+  			poppins: [
+  				'Poppins',
+  				'sans-serif'
+  			]
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-		screens:{
-			xs : "480px",
-			xxl: "1440px"
-		}
+  		screens: {
+  			xs: '480px',
+  			xxl: '1440px'
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
