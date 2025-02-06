@@ -1,17 +1,122 @@
-"use client"
+"use client";
 import Banner from "@/components/Banner";
 import CustomerCare from "@/components/Customer-Care";
 import { getCart } from "../../../redux/cartSlice";
 import { useAppSelector } from "../../../hooks/redux";
 import { Product } from "@/types/productData";
+import { useEffect, useState } from "react";
+import { client } from "@/sanity/lib/client";
+import { toast } from "react-toastify";
+
+
 
 export default function Checkout() {
-   const cart = useAppSelector(getCart);
-    let totalPrice = 0;
-    cart.forEach((item:Product) => {
-      totalPrice += item.price * item.quantity;
-    })
-    
+  const cart = useAppSelector(getCart);
+  const [cartItems, setCartItems] = useState<Product[]>([]);
+  let totalPrice = 0;
+
+  cart.forEach((item: Product) => {
+    totalPrice += item.price * item.quantity;
+  });
+
+  const productQuantity = cart.forEach((element : Product)=> {
+    return element.quantity
+  });
+
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    phone: "",
+    email: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    firstName: false,
+    lastName: false,
+    address: false,
+    city: false,
+    zipCode: false,
+    phone: false,
+    email: false,
+  });
+
+  useEffect(() => {
+    setCartItems(cart);
+  }, [cart]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [id]: value.trim(),
+    }));
+  };
+
+  const validateForm = () => {
+    const errors = {
+      firstName: !formValues.firstName,
+      lastName: !formValues.lastName,
+      address: !formValues.address,
+      city: !formValues.city,
+      zipCode: !/^\d{5,6}$/.test(formValues.zipCode),
+      phone: !/^\d{10,15}$/.test(formValues.phone),
+      email: !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email),
+    };
+    setFormErrors(errors);
+    return Object.values(errors).every((error) => !error);
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!validateForm()) {
+      toast.error("Please fill in all fields. ⚠️");
+      return;
+    }
+
+    const confirmation = window.confirm(
+      "Are you sure you want to place this order? You will receive an email confirmation once the order is placed."
+    );
+
+    if (!confirmation) {
+      toast.info("Order placement canceled.");
+      return;
+    }
+
+    toast.success("Order confirmed! 🚀 Processing your order...");
+
+    const orderData = {
+      _type: "order",
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      address: formValues.address,
+      city: formValues.city,
+      phone: formValues.phone,
+      zipCode: formValues.zipCode,
+      email: formValues.email,
+      cartItems: cartItems.map((item) => ({
+        _type: "object", // Object bana raha hai
+        product: { _type: "reference", _ref: item._id }, // Reference ke andar wrap kar diya
+        quantity: item.quantity, // Correctly store kar raha hai
+      })),
+      total: totalPrice,
+      orderDate: new Date().toISOString,
+      quantity: productQuantity // Store quantity
+
+    };
+
+    try {
+      await client.create(orderData);
+      localStorage.removeItem("appliedDiscount");
+      toast.success(
+        "Your order has been placed successfully! 🎉 A confirmation email has been sent to your email address."
+      );
+    } catch (error) {
+      console.error("Error Creating Data", error);
+      toast.error("Failed to place order. Please try again. ❌");
+    }
+  };
   return (
     <div>
       <Banner name="Checkout" title="Checkout" logo="/logo.png" />
@@ -28,49 +133,50 @@ export default function Checkout() {
               <div className="flex gap-5">
                 <div className="w-[212px] h-[121px] flex flex-col justify-between">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="firstName"
                     className="font-medium font-poppins text-base"
                   >
                     First Name
                   </label>
                   <input
+                    value={formValues.firstName}
+                    onChange={handleInputChange}
                     type="text"
                     required
-                    id="first-name"
+                    id="firstName"
                     className="sm:w-[212px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                   />
+                  {formErrors.firstName && (
+                    <p className="text-sm text-red-500">
+                      First name is required.
+                    </p>
+                  )}
                 </div>
+
                 <div className="w-[212px] h-[121px] flex flex-col justify-between">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="lastName"
                     className="font-medium font-poppins text-base"
                   >
                     Last Name
                   </label>
                   <input
+                    value={formValues.lastName}
+                    onChange={handleInputChange}
                     type="text"
                     required
-                    id="last-name"
+                    id="lastName"
                     className="sm:w-[212px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                   />
+                  {formErrors.lastName && (
+                    <p className="text-sm text-red-500">
+                      Last name is required.
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="h-[121px] flex flex-col justify-between">
-                <label
-                  htmlFor="company-name"
-                  className="font-medium font-poppins text-base"
-                >
-                  Company Name (Optional)
-                </label>
-                <input
-                  type="text"
-                  id="company-name"
-                  className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
-                />
-              </div>
-
-              <div className="h-[121px] flex flex-col justify-between">
+              {/* <div className="h-[121px] flex flex-col justify-between">
                 <label
                   htmlFor="country-region"
                   className="font-medium font-poppins text-base"
@@ -96,75 +202,66 @@ export default function Checkout() {
                   <option value="usa">United States</option>
                   <option value="canada">Canada</option>
                 </select>
-              </div>
+              </div> */}
 
               <div className="h-[121px] flex flex-col justify-between">
                 <label
-                  htmlFor="street-address"
+                  htmlFor="address"
                   className="font-medium font-poppins text-base"
                 >
                   Street address
                 </label>
                 <input
+                  value={formValues.address}
+                  onChange={handleInputChange}
                   type="text"
-                  id="street-address"
+                  id="address"
                   required
                   className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                 />
+                {formErrors.address && (
+                  <p className="text-sm text-red-500">Address is required.</p>
+                )}
               </div>
 
               <div className="h-[121px] flex flex-col justify-between">
                 <label
-                  htmlFor="town-city"
+                  htmlFor="city"
                   className="font-medium font-poppins text-base"
                 >
                   Town / City
                 </label>
                 <input
                   required
+                  value={formValues.city}
+                  onChange={handleInputChange}
                   type="text"
-                  id="town-city"
+                  id="city"
                   className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                 />
+                {formErrors.city && (
+                  <p className="text-sm text-red-500">City is required.</p>
+                )}
               </div>
 
               <div className="h-[121px] flex flex-col justify-between">
                 <label
-                  htmlFor="country-region"
-                  className="font-medium font-poppins text-base"
-                >
-                  Province
-                </label>
-                <select
-                  required
-                  className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border border-[#9F9F9F] rounded-[10px] px-5 font-poppins text-[#9F9F9F] text-base"
-                  id="country-region"
-                >
-                  <option value="western">Western Province</option>
-                  <option value="eastern">Eastern Province</option>
-                  <option value="southern">Southern Province</option>
-                  <option value="northern">Northern Province</option>
-                  <option value="central">Central Province</option>
-                  <option value="north_western">North Western Province</option>
-                  <option value="north_central">North Central Province</option>
-                  <option value="uva">Uva Province</option>
-                  <option value="sabaragamuwa">Sabaragamuwa Province</option>
-                </select>
-              </div>
-
-              <div className="h-[121px] flex flex-col justify-between">
-                <label
-                  htmlFor="zip-code"
+                  htmlFor="zipCode"
                   className="font-medium font-poppins text-base"
                 >
                   ZIP code
                 </label>
                 <input
-                  type="text"
-                  id="zip-code"
+                  value={formValues.zipCode}
+                  onChange={handleInputChange}
+                  // type="text"
+                  id="zipCode"
                   required
                   className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                 />
+                {formErrors.zipCode && (
+                  <p className="text-sm text-red-500">Zip Code is required.</p>
+                )}
               </div>
 
               <div className="h-[121px] flex flex-col justify-between">
@@ -178,8 +275,13 @@ export default function Checkout() {
                   type="number"
                   id="phone"
                   required
+                  value={formValues.phone}
+                  onChange={handleInputChange}
                   className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                 />
+                {formErrors.phone && (
+                  <p className="text-sm text-red-500">Phone is required.</p>
+                )}
               </div>
 
               <div className="h-[121px] flex flex-col justify-between">
@@ -193,17 +295,13 @@ export default function Checkout() {
                   type="email"
                   id="email"
                   required
+                  value={formValues.email}
+                  onChange={handleInputChange}
                   className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border placeholder:text-[#9F9F9F] border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4"
                 />
-              </div>
-
-              <div className="h-[121px] flex flex-col justify-between pt-7">
-                <textarea
-                  className="sm:w-[453px] w-full sm:h-[75px] h-[60px] border border-[#9F9F9F] rounded-[10px] font-poppins text-base px-4 text-[#9F9F9F] resize-none md:py-6 py-4"
-                  id="additional-information"
-                >
-                  Additional information
-                </textarea>
+                {formErrors.email && (
+                  <p className="text-sm text-red-500">Email is required.</p>
+                )}
               </div>
             </form>
           </div>
@@ -217,35 +315,38 @@ export default function Checkout() {
               <h4 className="font-poppins font-medium text-2xl/9">Product</h4>
               <h4 className="font-poppins font-medium text-2xl/9">Subtotal</h4>
             </span>
-            
+
             <div>
-              {cart.map((val:Product)=>
-                <span className="flex justify-between items-center" key={val._id}>
+              {cartItems.map((val: Product) => (
+                <span
+                  className="flex justify-between items-center"
+                  key={val._id}
+                >
                   <span className="flex gap-2 items-center">
                     <p className="font-poppins font-normal text-base text-[#9F9F9F]">
                       {val.title}
                     </p>
                     <p className="font-medium font-poppins text-xs/[18px]">X</p>
-                    <p className="font-medium font-poppins text-xs/[18px]">{val.quantity}</p>
+                    <p className="font-medium font-poppins text-xs/[18px]">
+                      {val.quantity}
+                    </p>
                   </span>
                   <p className=" font-poppins font-light text-base">
-                    {val.price * val.quantity}
+                  ${val.price * val.quantity}
                   </p>
                 </span>
-              )}
+              ))}
             </div>
 
             <span className="flex justify-between items-center">
               <p className="font-poppins font-normal text-base">Subtotal</p>
-              <p className="font-poppins font-normal text-base">
-                {totalPrice}
-              </p>
+              <p className="font-poppins font-normal text-base">${totalPrice}</p>
             </span>
 
             <span className="flex justify-between items-center">
               <p className="font-poppins font-normal text-base">Total</p>
               <p className="font-poppins font-bold text-2xl/9 text-[#B88E2F]">
-                {totalPrice}
+                ${totalPrice}
               </p>
             </span>
           </div>
@@ -267,21 +368,48 @@ export default function Checkout() {
             </p>
 
             <div>
-              <label className="text-base font-poppins font-medium text-[#9F9F9F]" htmlFor="dbt">
-                <input type="radio" className="mr-2" id="dbt"  name="payment-method"/>
+              <label
+                className="text-base font-poppins font-medium text-[#9F9F9F]"
+                htmlFor="dbt"
+              >
+                <input
+                  type="radio"
+                  className="mr-2"
+                  id="dbt"
+                  name="payment-method"
+                />
                 Direct Bank Transfer
               </label>
               <br />
 
-              <label className="text-base font-poppins font-medium text-[#9F9F9F]" htmlFor="con">
-                <input type="radio" className="mr-2" id="con" name="payment-method"/>
+              <label
+                className="text-base font-poppins font-medium text-[#9F9F9F]"
+                htmlFor="con"
+              >
+                <input
+                  type="radio"
+                  className="mr-2"
+                  id="con"
+                  name="payment-method"
+                />
                 Cash On Delivery
               </label>
             </div>
 
-            <p className="text-base font-poppins font-light">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <span className="font-semibold">privacy policy.</span></p>
+            <p className="text-base font-poppins font-light">
+              Your personal data will be used to support your experience
+              throughout this website, to manage access to your account, and for
+              other purposes described in our{" "}
+              <span className="font-semibold">privacy policy.</span>
+            </p>
 
-            <button type="button" className="font-poppins font-normal text-xl/[30px] sm:w-[318px] w-52 h-16 rounded-[15px] hover:bg-slate-50 mx-auto mt-6 border border-black">Place order</button>
+            <button
+              type="button"
+              onClick={handlePlaceOrder}
+              className="font-poppins font-normal text-xl/[30px] sm:w-[318px] w-52 h-16 rounded-[15px] hover:bg-slate-50 mx-auto mt-6 border border-black"
+            >
+              Place order
+            </button>
           </div>
         </div>
         {/* Product details section end */}
@@ -291,3 +419,5 @@ export default function Checkout() {
     </div>
   );
 }
+
+
