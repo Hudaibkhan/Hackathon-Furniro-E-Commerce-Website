@@ -101,7 +101,7 @@ export default function Checkout() {
         quantity: item.quantity, // Correctly store kar raha hai
       })),
       total: totalPrice,
-      orderDate: new Date().toISOString,
+      orderDate: new Date().toISOString(),
       quantity: productQuantity // Store quantity
 
     };

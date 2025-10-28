@@ -13,14 +13,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
   likeProduct,
+  unlikeProduct,
   addToComparison,
   removeFromComparison,
+  getLikedProducts,
   getComparison,
 } from "../../../redux/cartSlice";
 
 export default function Shop() {
   const dispatch = useDispatch();
   const comparison = useSelector(getComparison); // Comparison products state
+  const likedProducts = useSelector(getLikedProducts); // liked products state
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -70,6 +73,11 @@ export default function Shop() {
   const handleLikeProduct = (product: Product) => {
     dispatch(likeProduct(product));
     triggerNotification(`You liked ${product.title}.🤍`);
+  };
+
+  const handleUnlikeProduct = (productId: string) => {
+    // Remove product from the like array
+    dispatch(unlikeProduct(productId));
   };
 
   // Add to Comparison Handler
@@ -174,75 +182,133 @@ export default function Shop() {
       {/* Product Grid */}
       <div className="xl:w-[1236px] mx-auto px-4 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product: Product) => (
-            <div
-              className="relative w-[250px] xs:w-[280px] mx-auto group"
-              key={product._id}
-            >
-              <Link href={`/shop/${product._id}`}>
-                <div className="relative ">
+            {products.map((product: Product) => (
+          <div
+            className="relative w-[250px] xs:w-[280px] mx-auto group"
+            key={product._id}
+          >
+            <Link href={`/shop/${product._id}`}>
+              <span className="block overflow-hidden rounded-2xl shadow-lg bg-white hover:shadow-2xl transform transition-all duration-250 group-hover:-translate-y-1">
+                {/* IMAGE */}
+                <div className="relative w-full h-[320px] overflow-hidden">
                   {product.productImage && (
                     <Image
                       src={urlFor(product.productImage).url()}
                       alt={product.title || "Product Image"}
-                      className="rounded-lg w-full h-[320px]"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       height={391}
                       width={481}
                     />
                   )}
-                </div>
-              </Link>
-              <div className="bg-[#eaedf2] p-4">
-                <h4 className="font-bold text-2xl mt-3">{product.title}</h4>
-                <p className="font-semibold text-xl mt-2">${product.price}</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {/* Add to Cart */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="bg-white text-[#D89E00] w-full py-2 rounded-lg"
-                  >
-                    Add to Cart
-                  </button>
-                  <div className="flex w-full gap-2 justify-center">
-                    {/* Like */}
-                    <button
-                      onClick={() => handleLikeProduct(product)}
-                      className="bg-[#D89E00] flex items-center gap-1 text-white px-3 py-2 rounded-lg"
-                    >
-                      <Image
-                        src="/heart-white.png"
-                        alt="Like Icon"
-                        height={14}
-                        width={14}
-                      />
-                      Like
-                    </button>
-                    {/* Add to Comparison */}
-                    <button
-                      onClick={() => {
-                        if (
-                          comparison.some((item) => item._id === product._id)
-                        ) {
-                          handleRemoveFromComparison(product._id); // Call the remove function if already in comparison
-                        } else {
-                          handleAddToComparison(product); // Call the add function if not in comparison
-                        }
-                      }}
-                      className={`py-2 px-3 rounded-lg ${
-                        comparison.some((item) => item._id === product._id)
-                          ? "bg-gray-500 text-white text-xs" // Styling for "Remove from Comparison"
-                          : "bg-[#D89E00] text-white" // Styling for "Add to Comparison"
-                      }`}
-                    >
-                      {comparison.some((item) => item._id === product._id)
-                        ? "Remove from Comparison"
-                        : "Add to Comparison"}
-                    </button>
+
+                  {/* price badge top-left */}
+                  <div className="absolute left-3 top-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold shadow">
+                    ${product.price}
                   </div>
                 </div>
+              </span>
+            </Link>
+
+            {/* FOOTER */}
+            <div className="mt-3 px-4 pb-4">
+              <div className="flex items-start justify-between">
+                <h4 className="font-bold text-[20px] leading-tight text-slate-900 mt-1">
+                  {product.title}
+                </h4>
+
+                {/* Like (heart) */}
+                <button
+                  onClick={(e) => {
+                    const btn = e.currentTarget;
+                    btn.classList.add("animate-pop");
+                    setTimeout(() => btn.classList.remove("animate-pop"), 250);
+
+                    if (likedProducts.some((item) => item._id === product._id)) {
+                      handleUnlikeProduct(product._id);
+                    } else {
+                      handleLikeProduct(product);
+                    }
+                  }}
+                  className={`ml-3 flex items-center justify-center p-2 rounded-full transition-transform duration-150
+                    ${likedProducts.some((item) => item._id === product._id)}
+                    shadow-sm`}
+                  aria-label="like"
+                  title={likedProducts.some((item) => item._id === product._id) ? "Unlike" : "Like"}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    className="transition-transform duration-150"
+                  >
+                    <path
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                        2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                        C13.09 3.81 14.76 3 16.5 3
+                        19.58 3 22 5.42 22 8.5
+                        c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      fill={likedProducts.some((item) => item._id === product._id) ? "red" : "white"}
+                      stroke={likedProducts.some((item) => item._id === product._id) ? "white" : "currentColor"}
+                      strokeWidth="1.3"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* small meta row */}
+              <div className="flex items-center justify-between mt-3 gap-3">
+                {/* Add to Cart - primary */}
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="flex-1 text-sm font-semibold py-2 rounded-lg bg-[#D89E00] text-white hover:brightness-95 transition"
+                >
+                  Add to Cart
+                </button>
+
+                <div className="w-2" />
+
+                {/* Comparison - modern */}
+                <button
+                  onClick={() => {
+                    if (comparison.some((item) => item._id === product._id)) {
+                      handleRemoveFromComparison(product._id);
+                    } else {
+                      handleAddToComparison(product);
+                    }
+                  }}
+                  className={`text-sm font-medium px-3 py-2 rounded-lg transition
+                    ${comparison.some((item) => item._id === product._id)
+                      ? "bg-[#cab16c] text-white border border-[#b79e50]"
+                      : "bg-white text-[#D89E00] border border-gray-200"}
+                    shadow-sm`}
+                >
+                  {comparison.some((item) => item._id === product._id) ? "In Comparison" : "Compare"}
+                </button>
               </div>
             </div>
-          ))}
+
+            {/* pop animation style (keeps local to card) */}
+            <style jsx>{`
+              @keyframes pop {
+                0% {
+                  transform: scale(1);
+                }
+                50% {
+                  transform: scale(1.25);
+                }
+                100% {
+                  transform: scale(1);
+                }
+              }
+              .animate-pop {
+                animation: pop 240ms ease-in-out;
+              }
+            `}</style>
+          </div>
+        ))}
+
         </div>
       </div>
 
