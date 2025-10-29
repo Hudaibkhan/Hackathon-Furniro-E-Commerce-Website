@@ -4,5 +4,7 @@
     // Remove or comment out invalid rules
     // "another-rule": "off",
     // "yet-another-rule": "warn"
+     "@typescript-eslint/no-require-imports": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }
